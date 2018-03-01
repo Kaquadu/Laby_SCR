@@ -4,3 +4,10 @@ C:\Users\kkowa\Desktop\studbaza\Sem6\SCR\Lab1ZadDom\Lab1ZadDom\bin\Debug\Lab1Zad
 C:\Users\kkowa\Desktop\studbaza\Sem6\SCR\Lab1ZadDom\Lab1ZadDom\obj\Debug\Lab1ZadDom.csproj.CoreCompileInputs.cache
 C:\Users\kkowa\Desktop\studbaza\Sem6\SCR\Lab1ZadDom\Lab1ZadDom\obj\Debug\Lab1ZadDom.exe
 C:\Users\kkowa\Desktop\studbaza\Sem6\SCR\Lab1ZadDom\Lab1ZadDom\obj\Debug\Lab1ZadDom.pdb
+C:\Users\kkowa\Desktop\studbaza\Sem6\SCR\Laby_SCR\Lab1ZadDom\Lab1ZadDom\bin\Debug\Lab1ZadDom.exe.config
+C:\Users\kkowa\Desktop\studbaza\Sem6\SCR\Laby_SCR\Lab1ZadDom\Lab1ZadDom\bin\Debug\Lab1ZadDom.exe
+C:\Users\kkowa\Desktop\studbaza\Sem6\SCR\Laby_SCR\Lab1ZadDom\Lab1ZadDom\bin\Debug\Lab1ZadDom.pdb
+C:\Users\kkowa\Desktop\studbaza\Sem6\SCR\Laby_SCR\Lab1ZadDom\Lab1ZadDom\obj\Debug\Lab1ZadDom.csproj.CoreCompileInputs.cache
+C:\Users\kkowa\Desktop\studbaza\Sem6\SCR\Laby_SCR\Lab1ZadDom\Lab1ZadDom\obj\Debug\Lab1ZadDom.exe
+C:\Users\kkowa\Desktop\studbaza\Sem6\SCR\Laby_SCR\Lab1ZadDom\Lab1ZadDom\obj\Debug\Lab1ZadDom.pdb
+C:\Users\kkowa\Desktop\studbaza\Sem6\SCR\Laby_SCR\Lab1ZadDom\Lab1ZadDom\obj\Debug\Lab1ZadDom.csprojResolveAssemblyReference.cache
