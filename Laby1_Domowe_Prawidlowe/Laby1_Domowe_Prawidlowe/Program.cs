@@ -101,10 +101,10 @@ namespace Lab1
                 myObjs[i].Generator();
                 myObjs[i].Sortownik();
                 myObjs[i].Wypisywacz();
-                tickiCalosciowe[i] = sw.ElapsedTicks;
-                czasyCalosciowe[i] = tickiCalosciowe[i] / Stopwatch.Frequency;
                 sw.Stop();
                 sw.Reset();
+                tickiCalosciowe[i] = sw.ElapsedTicks;
+                czasyCalosciowe[i] = tickiCalosciowe[i] / Stopwatch.Frequency;
             }
 
                 Console.Clear();
