@@ -81,7 +81,6 @@ class dataCenter
                 Console.Write("\n");
             }
         }
-        Console.Clear();
     }
 
     Random rnd = new Random();
@@ -176,6 +175,8 @@ namespace Lab1ZadDom
                 sw.Stop();
                 ticks[6] = sw.ElapsedTicks;
                 times[6] = ticks[6] / Stopwatch.Frequency;
+                Console.ReadLine();
+                Console.Clear();
 
                 Console.Write("Czas utworzenia obiektu: " + times[0] + " [s], tykniec: " + ticks[0] + ", czestotliwosc: " + Stopwatch.Frequency + " [Hz].\n");
                 Console.Write("Czas losowania: " + times[1] + " [s], tykniec: " + ticks[1] + ", czestotliwosc: " + Stopwatch.Frequency + " [Hz].\n");
