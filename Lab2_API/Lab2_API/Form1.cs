@@ -66,22 +66,28 @@ namespace Lab2_API
         {
             if (firstRun)
             {
+                isRunning = true;
                 dataThread.Start();
                 firstRun = false;
             }
-            if (isRunning == false)
+            else
             {
-                isRunning = true;
+                if (isRunning == false)
+                {
+                    isRunning = true;
+                    dataThread.Resume();
+                }
             }
 
         }
 
         private void button3_Click(object sender, EventArgs e) //stop
         {
-            if (isRunning == false)
-                isRunning = true;
-            else
+            if (isRunning == true)
+            {
                 isRunning = false;
+                dataThread.Suspend();
+            }
         }
 
         private void chart1_Click(object sender, EventArgs e)
