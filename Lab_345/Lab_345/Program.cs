@@ -9,40 +9,79 @@ using System.Threading.Tasks;
 
 namespace Lab_345
 {
+
     class Program
     {
-        static int ilosc_agentow = 10;
-        static ConstantCountingAgent[] constantCountingAgent = new ConstantCountingAgent[ilosc_agentow];
-        static CountingAgent[] countingAgent = new CountingAgent[ilosc_agentow];
-        static SineGeneratingAgent[] sineGeneratingAgent = new SineGeneratingAgent[ilosc_agentow];
+        static int CCA_number = 10;
+        static int CA_number = 10;
+        static int SGA_number = 10;
 
         static void Main(string[] args)
         {
-            GenerateRunnables();
-            RunThreads();
+            List<IRunnable> agents = new List<IRunnable>();
+            agents = GenerateRunnables();
+            //RunThreads(agents);
+            RunFibers(agents);
+            Console.ReadLine();
         }
 
-        static void GenerateRunnables()
-        {     
-            for (int i = 0; i < ilosc_agentow; i++)
-            {
-                constantCountingAgent[i] = new ConstantCountingAgent(i);
-                countingAgent[i] = new CountingAgent(i + (ilosc_agentow));
-                sineGeneratingAgent[i] = new SineGeneratingAgent(i + (2 * (ilosc_agentow)));
-            }
-        }
-
-        static void RunThreads()
+        static List<IRunnable> GenerateRunnables()
         {
-            Thread[] threads = new Thread[ilosc_agentow * 3];
-
-            for (int i = 0; i < ilosc_agentow; i++)
+            var agents = new List<IRunnable>();
+            for (int i = 0; i < CCA_number; i++)
             {
-                threads[i] = new Thread(constantCountingAgent[i].Run);
-                threads[i+ilosc_agentow] = new Thread(countingAgent[i].Run);
-                threads[i+(2*ilosc_agentow)] = new Thread(sineGeneratingAgent[i].Run);
+                agents.Add(new ConstantCountingAgent(i));
+            }
+            for (int i = 0; i < CA_number; i++)
+            {
+                agents.Add(new CountingAgent(i + CA_number));
+            }
+            for (int i = 0; i < SGA_number; i++)
+            {
+                agents.Add(new SineGeneratingAgent(i + CA_number + SGA_number));
             }
 
+            return agents;
+        }
+
+        static void RunThreads(IEnumerable<IRunnable> agents)
+        {
+            var threads = new List<Thread>(agents.Count());
+
+            foreach (Agent ag in agents)
+            {
+                var t = new Thread(ag.Run);
+                threads.Add(t);
+                t.Start();
+            }
+
+            bool allFinished = false;
+            while (!allFinished)
+            {
+                Thread.Sleep(100);
+                allFinished = !agents.Any(r => !r.HasFinished);
+                //Console.WriteLine("Not finished! \n");  
+            }
+            Console.WriteLine("### Finished! ### \n");
+        }
+
+        static void RunFibers(IEnumerable<IRunnable> agents)
+        {
+            var enumerators = agents.Select(r => r.CoroutineUpdate());
+            var timeStep = 0.0f;
+            bool allFinished = false;
+            while (!allFinished)
+            {
+                foreach (var enumer in enumerators)
+                {
+                    if (enumer.MoveNext())
+                    {
+                        timeStep = enumer.Current;
+                    }
+                }
+                allFinished = !agents.Any(r => !r.HasFinished);
+                Thread.Sleep(100);
+            }
         }
     }
 }
