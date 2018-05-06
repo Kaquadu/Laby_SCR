@@ -15,16 +15,19 @@ namespace Lab_345
         }
 
         abstract public void Update();
+        abstract public void Update(List<IRunnable> listAgents);
+
+        abstract public int GetSum();
 
         public IEnumerator<float> CoroutineUpdate()
         {
-            float i = 0;
+            //float i = 0;
             while (HasFinished != true)
             {
-                this.Update();
-                this.virtualTimeS += 100;
-                System.Threading.Thread.Sleep(100);
-                yield return i;
+                Update();
+                virtualTimeS += 0.1f;
+                //System.Threading.Thread.Sleep(100);
+                yield return virtualTimeS;
             }
             yield break;
         }
@@ -34,17 +37,40 @@ namespace Lab_345
             while (!HasFinished)
             {
                 {
-                    this.Update();
-                    this.virtualTimeS += 100;
+                    Update();
+                    virtualTimeS += 0.1f;
+                    System.Threading.Thread.Sleep(100);
+                }
+            }
+        }
+
+        public void Run(List<IRunnable> listAgents)
+        {
+            Console.WriteLine("Utknal?? \n");
+            while (!HasFinished)
+            {
+                {
+                    Update(listAgents);
+                    virtualTimeS += 0.1f;
                     System.Threading.Thread.Sleep(100);
                 }
             }
         }
 
         public bool HasFinished { get; set; } = false;
+
+
         public int ID;
         double frequency;
-        protected float virtualTimeS = 0.0f;
+        public float virtualTimeS = 0.0f;
 
     }
 }
+
+
+
+//__________################____________
+//_________##################___________
+//_________####[ ]####[ ]####___________
+//_________########\/########___________
+//_________##################___________
