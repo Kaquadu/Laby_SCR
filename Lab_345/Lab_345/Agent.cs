@@ -15,9 +15,6 @@ namespace Lab_345
         }
 
         abstract public void Update();
-        abstract public void Update(List<IRunnable> listAgents);
-
-        abstract public int GetSum();
 
         public IEnumerator<float> CoroutineUpdate()
         {
@@ -44,26 +41,13 @@ namespace Lab_345
             }
         }
 
-        public void Run(List<IRunnable> listAgents)
-        {
-            Console.WriteLine("Utknal?? \n");
-            while (!HasFinished)
-            {
-                {
-                    Update(listAgents);
-                    virtualTimeS += 0.1f;
-                    System.Threading.Thread.Sleep(100);
-                }
-            }
-        }
-
         public bool HasFinished { get; set; } = false;
 
 
         public int ID;
         double frequency;
         public float virtualTimeS = 0.0f;
-
+        public int Suma { get; set; }
     }
 }
 

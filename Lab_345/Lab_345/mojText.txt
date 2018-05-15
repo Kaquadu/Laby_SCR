@@ -1,0 +1,19 @@
+Na podstawie oglêdzin obiektu i analizy dostêpnej dokumentacji projektowej wykonujemy cztery rodzaje opracowañ technicznych stosowanych przy okreœlaniu stanu zagro¿enia obiektów budowlanych.
+
+Opinie i ekspertyzy techniczne opracowywane s¹ na podstawie oglêdzin obiektu, analizy dostêpnej dokumentacji projektowej, powykonawczej (w przypadku jej braku na podstawie inwentaryzacji) i dokumentacji eksploatacyjnej, a w razie potrzeby na podstawie niezbêdnych badañ i obliczeñ.
+
+Wymienione rodzaje opracowañ technicznych nie zosta³y zdefiniowane w przepisach ustawy Prawo budowlane. W literaturze s¹ podawane ró¿ne definicje nw. opracowañ technicznych.
+
+Ocena techniczna dotyczy okreœlonych zdarzeñ, zjawisk lub procesów bez podawania przyczyn, ale z ocen¹ zagro¿eñ i stanu obiektu. Ocena techniczna to opracowanie, które oparte jest na tych samych zasadach, co sporz¹dzanie projektów budowlanych. Ocena techniczna opisuje, analizuje i ocenia spodziewany (projektowany) stan techniczny obiektu budowlanego, opieraj¹c siê na zasadach projektowych.
+Opinia techniczna dotyczy okreœlonych rozwi¹zañ projektowych, zdarzeñ lub zjawisk z procesu realizacji lub u¿ytkowania. Mo¿e zawieraæ równie¿ os¹d rozwi¹zañ materia³owych oraz nak³adów finansowych. Opinia wyra¿a mniemanie lub przekonanie o czymœ, niepoparte procesem badawczym, st¹d czêsto jest subiektywna.
+Ekspertyza techniczna zawiera dokumentacjê i ocenê zjawisk, zdarzeñ i procesów zachodz¹cych w czasie realizacji lub u¿ytkowania obiektu budowlanego, której zadaniem jest okreœlenie aktualnego stanu technicznego obiektu budowlanego lub jego czêœci po zaistnieniu okolicznoœci, których efektem jest powstanie przemieszczeñ, zarysowañ, pêkniêæ, nadmiernych ugiêæ itp.
+Zadaniem ekspertyzy jest wskazanie przyczyn zaistnia³ych nieprawid³owoœci, jak równie¿ wskazanie skutecznych sposobów ich usuniêcia.
+
+Obejmuje na ogó³ inwentaryzacjê uszkodzeñ elementów konstrukcyjnych i elementów ogólnobudowlanych, badania pod³o¿a gruntowego, badania kontrolne podstawowych materia³ów konstrukcyjnych, badania mechaniczno-strukturalne wbudowanych materia³ów. Zawiera tak¿e sprawdzaj¹c¹ analizê statyczn¹ elementów i ustroju konstrukcyjnego, ocenê rozwi¹zañ technologicznych w poszczególnych fazach realizacji obiektu, okreœla i podaje g³ówne przyczyny uszkodzeñ, proponuje zalecenia i wariantowe sposoby wzmocnienia uszkodzonych elementów budynku oraz formu³uje wnioski koñcowe.
+
+Wnioski z ekspertyzy maj¹ stanowiæ podstawê do ustalenia dalszego postêpowania z obiektem lub konstrukcj¹ budowlan¹.
+
+Orzeczenie techniczne zawiera ocenê rozwi¹zañ technicznych, zjawisk i zdarzeñ zachodz¹cych w procesie projektowania, realizacji oraz u¿ytkowania obiektu budowlanego. Mo¿e równie¿ obejmowaæ ocenê poszczególnych elementów konstrukcyjnych, elementów ogólnobudowlanych, ocenê rozwi¹zañ technologicznych i materia³owych oraz ocenê nak³adów finansowych. W przypadku wyst¹pienia niekorzystnych zdarzeñ lub zjawisk okreœla przyczyny ich powstania oraz formu³uje ocenê koñcow¹. Orzeczenie to termin zarezerwowany dla ocen, w których rozstrzygane s¹ sprawy sporne, oraz dla ocen o charakterze sprawdzenia lub weryfikacji.
+Do terminów opinia i ekspertyza czêsto dodaje siê przymiotniki: techniczno-budowlana, konstrukcyjno-budowlana, techniczno-ekonomiczna, mykologiczna itp.
+
+Rozbudowa, nadbudowa, przebudowa oraz zmiana przeznaczenia budynku powinny byæ poprzedzone ekspertyz¹ techniczn¹ stanu konstrukcji i elementów budynku, z uwzglêdnieniem  stanu pod³o¿a gruntowego.

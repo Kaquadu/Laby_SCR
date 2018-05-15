@@ -12,14 +12,14 @@ namespace Lab_345
 
     class Program
     {
-        static int CCA_number = 1;
-        static int CA_number = 1;
-        static int SGA_number = 1;
-        static int LCA_number = 4;
-        static int LCA_list_size = 1006;
-        static int LCA_list_modulo = LCA_list_size % LCA_number;
-        static int LCA_range = (LCA_list_size - LCA_list_modulo) / LCA_number;
-        
+        //static int CCA_number = 0;
+        //static int CA_number = 0;
+        //static int SGA_number = 0;
+        //static int LCA_number = 10;
+        //static int LCA_e_number = 5;
+        //static int LCA_list_size = 10060;
+        //static int LCA_range = LCA_list_size / LCA_number;
+        static int TSA_number = 9;
 
         static void Main(string[] args)
         {
@@ -33,36 +33,47 @@ namespace Lab_345
         static List<IRunnable> GenerateRunnables()
         {
             var agents = new List<IRunnable>();
-            for (int i = 0; i < CCA_number; i++)
-            {
-                agents.Add(new ConstantCountingAgent(i));
-            }
-            for (int i = 0; i < CA_number; i++)
-            {
-                agents.Add(new CountingAgent(i + CA_number));
-            }
-            for (int i = 0; i < SGA_number; i++)
-            {
-                agents.Add(new SineGeneratingAgent(i + CA_number + CCA_number));
-            }
+            //for (int i = 0; i < CCA_number; i++)
+            //{
+            //    agents.Add(new ConstantCountingAgent(i));
+            //}
+            //for (int i = 0; i < CA_number; i++)
+            //{
+            //    agents.Add(new CountingAgent(i + CA_number));
+            //}
+            //for (int i = 0; i < SGA_number; i++)
+            //{
+            //    agents.Add(new SineGeneratingAgent(i + CA_number + CCA_number));
+            //}
 
-            List<int> args = new List<int>();
-            Random rnd = new Random();
-            for (int i = 0; i < LCA_list_size; i++)
-            {
-                int rand = rnd.Next(1, 1000);
-                args.Add(rand);
-            }
+            //List<int> args = new List<int>();
+            //Random rnd = new Random();
+            //for (int i = 0; i < LCA_list_size; i++)
+            //{
+            //    int rand = rnd.Next(1, 100);
+            //    args.Add(rand);
+            //}
 
-            for (int i = 0; i < LCA_number; i++)
-            {
-                if(i + 1 != LCA_number)
-                    agents.Add(new ListCountingAgent(agents.Count + 1, args, (i+1)*LCA_range, LCA_range));
-                if(i + 1 == LCA_number)
-                    agents.Add(new ListCountingAgent(agents.Count + 1, args, (i+1)*LCA_range + LCA_list_modulo, LCA_range));
-            }
+            //for (int id = 0; id < LCA_number; id++)
+            //{
+            //    int beginn = id * LCA_range;
+            //    int endd = ((id + 1) * LCA_range);
 
-            agents.Add(new ListSummingAgent(agents.Count + 1));
+            //    if (id == LCA_number - 1)
+            //    {
+            //        endd = LCA_list_size;
+            //    }
+
+            //    agents.Add(new ListCountingAgent(id, beginn, endd, ref args, LCA_e_number));
+            //}
+
+            //agents.Add(new ListsSummingAgent(agents.Count(), agents));
+
+            string text = System.IO.File.ReadAllText("mojText.txt");
+
+            agents.Add(new TextDividingAgent(agents.Count()-1, text, TSA_number));
+            for (int i = 0; i < TSA_number; i++)
+                agents.Add(new TextSummingAgent(agents.Count()-1, (TextDividingAgent)agents[0], TSA_number));
 
             return agents;
         }
@@ -90,6 +101,14 @@ namespace Lab_345
                 allFinished = !agents.Any(r => !r.HasFinished);
                 Thread.Sleep(100);
             }
+
+            //int sum = 0;
+            //foreach (Agent agent in agents)
+            //{
+            //    sum = sum + agent.Suma;
+            //}
+            //Console.WriteLine("Suma wlokien: " + sum);
+
             Console.WriteLine("### Finished fibers! ### \n");
         }
     }
@@ -103,22 +122,10 @@ namespace Lab_345
 
             foreach (Agent ag in agents)
             {
-                if (!(ag is ListSummingAgent))
-                {
+                    //Console.WriteLine("Odpalam watek \n");
                     var t = new Thread(ag.Run);
                     threads.Add(t);
                     t.Start();
-                }
-                else
-                {
-                    ThreadStart pts = delegate
-                    {
-                        ag.Run(agents);
-                    };
-                    var t = new Thread(ag.Run);
-                    threads.Add(t);
-                    t.Start();
-                }
             }
 
             bool allFinished = false;
@@ -135,6 +142,14 @@ namespace Lab_345
                     }
                 }
             }
+
+            //int sum = 0;
+            //foreach (Agent agent in agents)
+            //{
+            //    sum = sum + agent.Suma;
+            //}
+            //Console.WriteLine("Suma watkow: " + sum);
+
             Console.WriteLine("### Finished threads! ### \n");
         }
 
