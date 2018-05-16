@@ -75,6 +75,15 @@ namespace Lab_345
             for (int i = 0; i < TSA_number; i++)
                 agents.Add(new TextSummingAgent(agents.Count()-1, (TextDividingAgent)agents[0], TSA_number));
 
+            var agentss = new List<TextSummingAgent>();
+            foreach (var a in agents)
+            {
+                if (a is TextSummingAgent)
+                    agentss.Add((TextSummingAgent)a);
+            }
+
+            agents.Add(new TextJoiningAgent(agents.Count() - 1, agentss));
+
             return agents;
         }
 

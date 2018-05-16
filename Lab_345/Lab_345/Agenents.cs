@@ -198,19 +198,69 @@ namespace Lab_345
         {
             if (TDAgent.HasFinished == true)
             {
-                wordsDict = TDAgent.listOfLists[this.ID].ToDictionary(x=>x);
+                agList = TDAgent.listOfLists[this.ID];
 
-                foreach(var word in wordsDict)
-                    Console.WriteLine(word.Key + " " + word.Value);
+                g = agList.GroupBy(i => i);
+
+                foreach (var grp in g)
+                {
+                    //Console.WriteLine("{0} {1}", grp.Key, grp.Count());
+                }
+
+                //Console.WriteLine("\n\n NEXT AGENT \n\n");
                 HasFinished = true;
                 //Console.WriteLine("Koniec agenta o ID: " + this.ID);
             }
 
         }
 
+        public IEnumerable<IGrouping<string, string>> g;
         public TextDividingAgent TDAgent;
-        public Dictionary<string, int> wordsDict= new Dictionary<string, int>();
+        public List<string> agList = new List<string>();
         public int nSize;
+    }
+
+    class TextJoiningAgent : Agent
+    {
+        public TextJoiningAgent(int id, List<TextSummingAgent> ags) : base(id)
+        {
+            agents = ags;
+        }
+
+        public override void Update()
+        {
+            bool allFinished = false;
+            while (!allFinished)
+            {
+                foreach (Agent ag in agents)
+                {
+                    allFinished = true;
+                    if (!ag.HasFinished)
+                    {
+                        allFinished = false;
+                        break;
+                    }
+                }
+            }
+
+            foreach(var ag in agents)
+            {
+                wordList.AddRange(ag.agList);
+            }
+
+            g = wordList.GroupBy(i => i);
+
+            foreach (var grp in g)
+            {
+                Console.WriteLine("{0} {1}", grp.Key, grp.Count());
+            }
+
+            HasFinished = true;
+        }
+
+        public List<string> wordList = new List<string>();
+        public List<TextSummingAgent> agents = new List<TextSummingAgent>();
+        public IEnumerable<IGrouping<string, string>> g;
     }
 }
 
