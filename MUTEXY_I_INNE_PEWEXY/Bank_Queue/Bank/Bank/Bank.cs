@@ -29,7 +29,7 @@ namespace Bank
                     {
                         Console.WriteLine("DEPO started");
                         cur_bal = getBalance();
-                        System.Threading.Thread.Sleep(3000);
+                        System.Threading.Thread.Sleep(1000);
                         setBalance(cur_bal + _op._amount);
                         Console.WriteLine("DEPO finished.");
                         break;
