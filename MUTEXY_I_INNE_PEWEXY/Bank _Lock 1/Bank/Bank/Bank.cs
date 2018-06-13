@@ -11,8 +11,7 @@ namespace Bank
     {
         public double balance;
         private static System.Timers.Timer aTimer = new System.Timers.Timer();
-        public SpinLock _spinlock = new SpinLock();
-        public bool lockTaken = false;
+        public Object thisLock = new Object();
 
         public Bank(double initial_balance)
         {
@@ -52,6 +51,7 @@ namespace Bank
 
         public void Add(double cash)
         {
+            System.Threading.Thread.Sleep(5000);
             balance += cash;
         }
     }

@@ -19,7 +19,7 @@ namespace Lab_345
         //static int LCA_e_number = 5;
         //static int LCA_list_size = 10060;
         //static int LCA_range = LCA_list_size / LCA_number;
-        static int TSA_number = 9;
+        static int TSA_number = 19;
 
         static void Main(string[] args)
         {
