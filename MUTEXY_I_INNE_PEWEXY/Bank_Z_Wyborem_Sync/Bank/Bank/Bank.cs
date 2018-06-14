@@ -13,14 +13,15 @@ namespace Bank
         public int balance;
         int choice;
 
+        public Bakery bakery;
+
         private static System.Timers.Timer aTimer = new System.Timers.Timer();
 
         public static Mutex mut = new Mutex();
 
         public Object thisLock = new Object();
 
-        public SpinLock _spinlock = new SpinLock();
-        public bool lockTaken = false;
+        public SpinLock _spinlock = new SpinLock(true);
 
         public static Queue _queue = new Queue();
         public Queue syncQueue = Queue.Synchronized(_queue);
@@ -30,9 +31,10 @@ namespace Bank
             return mut;
         }
 
-        public Bank(int initial_balance, int choice)
+        public Bank(int initial_balance, int choice, Bakery bakery)
         {
             this.choice = choice;
+            this.bakery = bakery;
             balance = initial_balance;
         }
 
@@ -40,7 +42,22 @@ namespace Bank
         {
             if (choice == 7)
                 Thread.MemoryBarrier();
-            Console.WriteLine("Obecny stan KONTA: {0}.", balance);
+            if (choice == 5)
+                Console.WriteLine("Obecny stan KONTA: {0}.", Interlocked.CompareExchange(ref balance, 0, 0));
+            if (choice == 3)
+            {
+                lock (thisLock)
+                {
+                    Console.WriteLine("Obecny stan KONTA: {0}.", balance);
+                }
+            }
+            if (choice == 9)
+            {
+                bakery.Lock(0);
+                Console.WriteLine("Obecny stan KONTA: {0}.", balance);
+                bakery.Unlock(0);
+            }
+            else Console.WriteLine("Obecny stan KONTA: {0}.", balance);
             if (choice == 7)
                 Thread.MemoryBarrier();
         }
@@ -52,17 +69,15 @@ namespace Bank
                 case "Deposit":
                     {
                         //Console.WriteLine("DEPO started");
-                        System.Threading.Thread.Sleep(1000);
-                        balance += _op._amount;
-                        Console.WriteLine("DODALEM sobie: {0}, stan KONTA: {1}", _op._amount, balance);
+                        Add(_op._amount);
+                        //Console.WriteLine("DODALEM sobie: {0}, stan KONTA: {1}", _op._amount, balance);
                         break;
                     }
                 case "Withdraw":
                     {
                         //Console.WriteLine("WITHDRAW started");
-                        System.Threading.Thread.Sleep(3000);
-                        balance -= _op._amount;
-                        Console.WriteLine("WYJALEM sobie: {0}, stan KONTA: {1}", _op._amount, balance);
+                        Withdraw(_op._amount);
+                        //Console.WriteLine("WYJALEM sobie: {0}, stan KONTA: {1}", _op._amount, balance);
                         break;
                     }
                 default: break;
@@ -88,31 +103,35 @@ namespace Bank
 
             Thread.Sleep(500);
 
-            while (true)
+            if (choice == 8)
             {
-                lock (syncQueue.SyncRoot) //  Some operation on the collection, which is now thread safe.
+                while (true)
                 {
-                    UpdateQueue((Operate)syncQueue.Dequeue());
-                    Console.WriteLine("W kolejce pozostalo {0} klientow. ", syncQueue.Count);
+                    lock (syncQueue.SyncRoot) //  Some operation on the collection, which is now thread safe.
+                    {
+                        try
+                        { UpdateQueue((Operate)syncQueue.Dequeue()); }
+                        catch { /*Console.WriteLine("Brak klientow w kolejce.");*/ }
+                        Console.WriteLine("W kolejce pozostalo {0} klientow. ", syncQueue.Count);
+                    }
                 }
-                System.Threading.Thread.Sleep(2000);
             }
         }
 
         public void Withdraw(int cash)
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
             if (balance > cash)
             {
                 balance -= cash;
-                Console.WriteLine("WYJALEM sobie: {0}", cash);
+                Console.WriteLine("WYJALEM sobie: {0}, stan KONTA: {1}", cash, balance);
             }
             else Console.WriteLine("Eat jars.");
         }
 
         public void Add(int cash)
         {
-            Thread.Sleep(3000);
+            Thread.Sleep(300);
             balance += cash;
             Console.WriteLine("DODALEM sobie: {0}, stan KONTA: {1}", cash, balance);
         }
@@ -120,7 +139,7 @@ namespace Bank
         public void AddToQueue(Operate op)
         {
             syncQueue.Enqueue(op);
-            Console.WriteLine("Dodano klienta do KOLEJKI.");
+            //Console.WriteLine("Dodano klienta do KOLEJKI.");
         }
 
         public void Withdraw(int cash, int method)
@@ -129,13 +148,13 @@ namespace Bank
             {
                 if (method == 1)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(100);
                     Interlocked.Add(ref balance, -cash);
                     Console.WriteLine("WYJALEM sobie: {0}, stan KONTA: {1}", cash, balance);
                 }
                 if (method == 2)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(100);
                     Thread.MemoryBarrier();
                     balance -= cash;
                     Thread.MemoryBarrier();
@@ -155,13 +174,13 @@ namespace Bank
         {
             if (method == 1)
             {
-                Thread.Sleep(3000);
+                Thread.Sleep(300);
                 Interlocked.Add(ref balance, cash);
                 Console.WriteLine("DODALEM sobie: {0}, stan KONTA: {1}", cash, balance);
             }
             if (method == 2)
             {
-                Thread.Sleep(3000);
+                Thread.Sleep(300);
                 Thread.MemoryBarrier();
                 balance += cash;
                 Thread.MemoryBarrier();
@@ -171,6 +190,25 @@ namespace Bank
             {
                 AddToQueue(new Operate("Deposit", cash));
             }
+        }
+
+        public void Withdraw(int cash, int method, int id)
+        {
+            bakery.Lock(id);
+            if (balance > cash)
+            {
+                balance -= cash;
+                Console.WriteLine("WYJALEM sobie: {0}, stan KONTA: {1}", cash, balance);
+            }
+            bakery.Unlock(id);
+        }
+
+        public void Add(int cash, int method, int id)
+        {
+            bakery.Lock(id);
+            balance += cash;
+            Console.WriteLine("DODALEM sobie: {0}, stan KONTA: {1}", cash, balance);
+            bakery.Unlock(id);
         }
     }
 }

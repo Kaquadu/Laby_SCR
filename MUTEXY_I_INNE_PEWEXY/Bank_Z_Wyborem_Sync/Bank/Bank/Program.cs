@@ -27,18 +27,20 @@ namespace Bank
 
     class Program
     {
-
+        public static Bakery bakery = new Bakery(20);
         public static void GenerateRunnables(List<IRunnable> agents, int choice)
         {
             if (choice != 6)
-                agents.Add(new Bank(1000, choice));
+                agents.Add(new Bank(1000, choice, bakery));
             else agents.Add(new Bank_V(1000));
             int cash = 100;
             bool positive = false;
-            agents.Add(new Client(agents[0], choice, cash, positive));
+            for (int i = 0; i < 10; i++)
+                agents.Add(new Client(agents[0], agents.Count()-1, choice, cash, positive));
             cash = 300;
             positive = true;
-            agents.Add(new Client(agents[0], choice, cash, positive));
+            for (int i = 0; i < 10; i++)
+                agents.Add(new Client(agents[0], agents.Count()-1, choice, cash, positive));
         }
 
         static void RunThreads(List<IRunnable> agents)
@@ -67,7 +69,8 @@ namespace Bank
                 "5. Interlock \n" +
                 "6. Volatile \n" +
                 "7. Memory Barier \n" +
-                "8. Queue \n");
+                "8. Queue \n" +
+                "9. Bakery \n");
             int choice;
             choice = Convert.ToInt32(Console.ReadLine());
             List<IRunnable> agents = new List<IRunnable>();

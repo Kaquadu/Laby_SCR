@@ -15,14 +15,16 @@ namespace Bank
         bool positive = true;
         bool hasFinished = false;
         string trybPracy = "Cykl";
+        int ID;
 
-        public Client(IRunnable b, int choice, int cash, bool positive) {
+        public Client(IRunnable b, int id , int choice, int cash, bool positive) {
             if (choice != 6)
                 _bank = (Bank)b;
             else _bank_V = (Bank_V)b;
             this.choice = choice;
             this.cash = cash;
             this.positive = positive;
+            this.ID = id;
         }
 
         //        "1. Bez synchronizacji \n" +
@@ -53,6 +55,8 @@ namespace Bank
                 UpMemoryBarier();
             if (choice == 8)
                 UpQueue();
+            if (choice == 9)
+                UpBakery();
         }
 
         public void Run()
@@ -101,6 +105,7 @@ namespace Bank
 
         public void UpSpinlock()
         {
+            bool lockTaken = false;
             if (trybPracy == "Oczekuj")
             {
                 bool passed = false;
@@ -108,25 +113,23 @@ namespace Bank
                 {
                     try
                     {
-                        _bank._spinlock.Enter(ref _bank.lockTaken);
-                        Console.WriteLine("Withdrawing started.");
+                        _bank._spinlock.Enter(ref lockTaken);
+                        //Console.WriteLine("Spinlock started.");
+                        if (!positive)
+                            _bank.Withdraw(cash);
+                        else
+                            _bank.Add(cash);
                         passed = true;
                     }
-                    catch { }
-                    System.Threading.Thread.Sleep(100);
-                }
-                if (_bank.lockTaken)
-                {
-                    if (!positive)
-                        _bank.Withdraw(cash);
-                    else
-                        _bank.Add(cash);
-                    try
+                    finally
                     {
-                        _bank._spinlock.Exit();
-                        Console.WriteLine("Withdrawing finished.");
+                        //Console.WriteLine("Spinlock finished.");
+                        if (lockTaken)
+                        {
+                            _bank._spinlock.Exit(false);
+                        }
                     }
-                    catch { }
+                    System.Threading.Thread.Sleep(100);
                 }
             }
 
@@ -134,47 +137,44 @@ namespace Bank
             {
                 try
                 {
-                    _bank._spinlock.Enter(ref _bank.lockTaken);
-                }
-                catch
-                { }
-                if (_bank.lockTaken)
-                {
+                    _bank._spinlock.Enter(ref lockTaken);
+                    //Console.WriteLine("Spinlock started.");
                     if (!positive)
                         _bank.Withdraw(cash);
                     else
                         _bank.Add(cash);
-                    try
-                    {
-                        _bank._spinlock.Exit();
-                        Console.WriteLine("Withdrawing finished.");
-                        hasFinished = true;
-                    } catch { }
                 }
-                else hasFinished = true;
+                finally
+                {
+                    if (lockTaken)
+                    {
+                        //Console.WriteLine("Spinlock finished.");
+                        hasFinished = true;
+                        _bank._spinlock.Exit(false);
+                    }
+                }
+                hasFinished = true;
             }
 
             if (trybPracy == "Cykl")
             {
-                try
-                {
-                    _bank._spinlock.Enter(ref _bank.lockTaken);
-                    Console.WriteLine("Withdrawing started.");
-                }
-                catch
-                { }
-                if (_bank.lockTaken)
-                {
-                    if (!positive)
-                        _bank.Withdraw(cash);
-                    else
-                        _bank.Add(cash);
                     try
                     {
-                        _bank._spinlock.Exit();
-                        Console.WriteLine("Withdrawing finished.");
-                    } catch { }
-                }
+                        _bank._spinlock.Enter(ref lockTaken);
+                        //Console.WriteLine("Spinlock started.");
+                        if (!positive)
+                            _bank.Withdraw(cash);
+                        else
+                            _bank.Add(cash);
+                    }
+                    finally
+                    {
+                        //Console.WriteLine("Spinlock finished.");
+                        if (lockTaken)
+                            {
+                                _bank._spinlock.Exit(false);
+                            }
+                    }
 
             }
         }
@@ -210,6 +210,14 @@ namespace Bank
             else
                 _bank.Add(cash, 3);
             System.Threading.Thread.Sleep(5000);
+        }
+
+        public void UpBakery()
+        {
+            if (!positive)
+                _bank.Withdraw(cash, 3, ID);
+            else
+                _bank.Add(cash, 3, ID);
         }
     }
 }
