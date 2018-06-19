@@ -49,7 +49,7 @@ namespace Bank
             if (balance > cash)
             {
                 balance -= cash;
-                Console.WriteLine("WYJALEM sobie: {0}", cash);
+                Console.WriteLine("WYJALEM sobie: {0}, stan KONTA: {1}", cash, balance);
             }
             else Console.WriteLine("Eat jars.");
         }
@@ -58,7 +58,7 @@ namespace Bank
         {
             Thread.Sleep(3000);
             balance += cash;
-            Console.WriteLine("DODALEM sobie: {0}", cash);
+            Console.WriteLine("DODALEM sobie: {0}, stan KONTA: {1}", cash, balance);
         }
     }
 }

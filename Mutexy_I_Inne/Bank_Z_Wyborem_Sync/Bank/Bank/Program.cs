@@ -6,7 +6,6 @@ using System.Threading;
 
 namespace Bank
 {
-
     public interface IRunnable
     {
         void Run();
@@ -27,7 +26,8 @@ namespace Bank
 
     class Program
     {
-        public static Bakery bakery = new Bakery(20);
+        static int agents_nr = 10;
+        public static Bakery bakery = new Bakery(agents_nr*2);
         public static void GenerateRunnables(List<IRunnable> agents, int choice)
         {
             if (choice != 6)
@@ -35,11 +35,11 @@ namespace Bank
             else agents.Add(new Bank_V(1000));
             int cash = 100;
             bool positive = false;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < agents_nr; i++)
                 agents.Add(new Client(agents[0], agents.Count()-1, choice, cash, positive));
             cash = 300;
             positive = true;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < agents_nr; i++)
                 agents.Add(new Client(agents[0], agents.Count()-1, choice, cash, positive));
         }
 

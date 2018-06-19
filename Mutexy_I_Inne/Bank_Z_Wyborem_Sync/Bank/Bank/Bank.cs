@@ -40,26 +40,51 @@ namespace Bank
 
         public void UpdateT(Object source, System.Timers.ElapsedEventArgs e)
         {
-            if (choice == 7)
-                Thread.MemoryBarrier();
-            if (choice == 5)
+            if (choice == 2)
+            {
+                mut.WaitOne();
+                Console.WriteLine("Obecny stan KONTA: {0}.", balance);
+                mut.ReleaseMutex();
+            }
+            else if (choice == 4)
+            {
+                bool lockTaken = false;
+                try
+                {
+                    _spinlock.Enter(ref lockTaken);
+                    Console.WriteLine("Obecny stan KONTA: {0}.", balance);
+                }
+                finally
+                {
+                    if (lockTaken)
+                    {
+                        Console.WriteLine("Obecny stan KONTA: {0}.", balance);
+                        _spinlock.Exit(false);
+                    }
+                }
+            }
+            else if (choice == 5)
                 Console.WriteLine("Obecny stan KONTA: {0}.", Interlocked.CompareExchange(ref balance, 0, 0));
-            if (choice == 3)
+            else if (choice == 3)
             {
                 lock (thisLock)
                 {
                     Console.WriteLine("Obecny stan KONTA: {0}.", balance);
                 }
             }
-            if (choice == 9)
+            else if (choice == 9)
             {
                 bakery.Lock(0);
                 Console.WriteLine("Obecny stan KONTA: {0}.", balance);
                 bakery.Unlock(0);
             }
-            else Console.WriteLine("Obecny stan KONTA: {0}.", balance);
-            if (choice == 7)
+            else if (choice == 7)
+            {
                 Thread.MemoryBarrier();
+                Console.WriteLine("Obecny stan KONTA: {0}.", balance);
+                Thread.MemoryBarrier();
+            }
+            else Console.WriteLine("Obecny stan KONTA: {0}.", balance);
         }
 
         public void UpdateQueue(Operate _op)
